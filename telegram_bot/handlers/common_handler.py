@@ -7,7 +7,7 @@ import os
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from telegram_bot.states.user_state import UserState
 from telegram_bot.routers.default_routers import default_router as router
-from telegram_bot.keyboards.restart import restart_kb 
+from telegram_bot.keyboards.restart import generate_restart_kb
 from telegram_bot.keyboards.cancel_generation import cg_kb
 from telegram_bot.keyboards.menu import menu_kb
 from telegram_bot.keyboards.get_back import return_kb 
@@ -22,7 +22,7 @@ import telegram_bot.callbacks.default_callbacks
 @router.message(Command("start"))
 async def start_bot(msg: Message, state: FSMContext):
     await state.set_state(UserState.menu_state)
-    await msg.answer(text="Привет 🖐️. Ты можешь помочь мне обучением, добавив свой файл, или я могу ответить на интересующий тебя вопрос", \
+    await msg.answer(text="Привет 🖐️. Ты можешь помочь мне с обучением, добавив свой файл, или я могу ответить на интересующий тебя вопрос", \
         reply_markup=menu_kb)
     
 
@@ -32,7 +32,7 @@ async def start_bot(msg: Message, state: FSMContext):
 @router.message(UserState.menu_state)
 async def handle_menu(msg: Message, state: FSMContext):
     await state.set_state(UserState.menu_state)
-    await msg.answer(text="Привет 🖐️. Ты можешь помочь мне обучением, добавив свой файл, или я могу ответить на интересующий тебя вопрос", \
+    await msg.answer(text="Добавь файлы или задай мне интересный вопрос 👉🏻👈🏻", \
         reply_markup=menu_kb)
 
 
@@ -67,7 +67,7 @@ async def generate_answer(msg: Message, state: FSMContext):
     for i in range(len(splitted_text)):
         await msg.answer(f"{splitted_text[i]}")
     
-    await msg.answer("Нажмите на кнопку, чтобы начать заново или вернуться в меню", reply_markup=restart_kb)
+    await msg.answer("Нажмите на кнопку, чтобы начать заново или вернуться в меню", reply_markup=generate_restart_kb("gleb_list"))
 
 
 

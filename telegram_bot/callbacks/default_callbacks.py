@@ -29,23 +29,13 @@ async def handle_new_question(callback: types.CallbackQuery, state: FSMContext):
     await state.set_state(UserState.answer_state)
     await callback.answer()
   
-    
-# @router.callback_query(F.data == "similar_quest")
-# async def handle_sim_questions(callback: types.CallbackQuery, state: FSMContext):
-    
-    # df_question = df['QUESTION'].to_list()
 
-    # kb = [[types.KeyboardButton(text=question)] for question in df_question]
-    # sq_kb = types.ReplyKeyboardMarkup(
-    #         keyboard=kb,
-    #         resize_keyboard=True,
-    #         is_persistent=True,
-    #         input_field_placeholder = "Похожие вопросы"
-    #     )
-    
-    #await callback.message.answer(text="Выберите похожий вопрос или задайте свой", reply_markup=sq_kb)
-    
-
+@router.callback_query(F.data.startswith("generate_"))
+async def handle_sim_question(callback: types.CallbackQuery, state: FSMContext):
+    button_text = callback.data.replace('generate_', '')
+    await callback.message.answer(button_text)
+    await state.set_state(UserState.answer_state)
+    await callback.answer()
     
 
 @router.callback_query(F.data == "ask_question")
